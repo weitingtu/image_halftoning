@@ -25,6 +25,7 @@ void dither( int n, char* file_path, char* save_path )
     {
         screening_matrix[i] = ( char* )malloc( sizeof( char ) * n );
     }
+
     int x_dir  = -1;
     int y_dir  = 1;
     int x_step = 1;
@@ -51,38 +52,26 @@ void dither( int n, char* file_path, char* save_path )
 
     int index = 0;
     screening_matrix[x_pos][y_pos] = seq[index++];
-    while ( true )
+    while ( index < size )
     {
-        int x_count = abs( x_dir * x_step );
         int y_count = abs( y_dir * y_step );
+        y_count = min( y_count, size - index );
         while ( y_count > 0 )
         {
             --y_count;
             y_pos += y_dir > 0 ? 1 : -1;
             screening_matrix[x_pos][y_pos] = seq[index++];
-            if ( index == size )
-            {
-                break;
-            }
         }
-        if ( index == size )
-        {
-            break;
-        }
+
+        int x_count = abs( x_dir * x_step );
+        x_count = min( x_count, size - index );
         while ( x_count > 0 )
         {
             --x_count;
             x_pos += x_dir > 0 ? 1 : -1;
             screening_matrix[x_pos][y_pos] = seq[index++];
-            if ( index == size )
-            {
-                break;
-            }
         }
-        if ( index == size )
-        {
-            break;
-        }
+
         x_dir *= -1;
         y_dir *= -1;
         ++x_step;
