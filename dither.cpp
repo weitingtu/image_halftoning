@@ -5,7 +5,6 @@
 /*  Assignment 01 Skeleton :    dither.cpp                               */
 /* --------------------------------------------------------------------- */
 
-#include <vector>
 #include "utils.h"
 
 //! NOTICE! ******** PUT ALL YOUR CODE INSIDE dither() ********
@@ -21,26 +20,33 @@ void dither( int n, char* file_path, char* save_path )
         --y_pos;
     }
 
-    std::vector<std::vector<char> > screening_matrix( n, std::vector<char>( n, 0 ) );
+    char** screening_matrix = ( char** )malloc( sizeof( char* ) * n );
+    for ( int i = 0; i < n; ++i )
+    {
+        screening_matrix[i] = ( char* )malloc( sizeof( char ) * n );
+    }
     int x_dir  = -1;
     int y_dir  = 1;
     int x_step = 1;
     int y_step = 1;
     int size = n * n;
 
-    std::vector<int> seq;
-    for ( int i = 1; i <= size; i += 2 )
+    int* seq = ( int* ) malloc( sizeof( int ) * size );
     {
-        seq.push_back( i );
-    }
-    for ( int i = 2; i <= size; i += 2 )
-    {
-        seq.push_back( i );
-    }
-    if ( seq.size() != size )
-    {
-        printf( "seq size mismatch %zu %d", seq.size(), size );
-        return;
+        int index = 0;
+        for ( int i = 1; i <= size; i += 2 )
+        {
+            seq[index++] = i;
+        }
+        for ( int i = 2; i <= size; i += 2 )
+        {
+            seq[index++] = i;
+        }
+        if ( index != size )
+        {
+            printf( "seq size mismatch %zu %d", index, size );
+            return;
+        }
     }
 
     int index = 0;
@@ -83,15 +89,6 @@ void dither( int n, char* file_path, char* save_path )
         ++y_step;
     }
 
-//    for ( int y = 0; y < n; ++y )
-//    {
-//        for ( int x = 0; x < n; ++x )
-//        {
-//            printf( "%2d ", ( int )screening_matrix[x][y] );
-//        }
-//        printf( "\n" );
-//    }
-
     Bitmap bmp;
     if ( !bmp.create( file_path ) )
     {
@@ -113,4 +110,15 @@ void dither( int n, char* file_path, char* save_path )
         }
     }
     bmp.save( save_path );
+
+    for ( int i = 0; i < n; ++i )
+    {
+        free ( screening_matrix[i] );
+        screening_matrix[i] = NULL;
+    }
+    free( screening_matrix );
+    screening_matrix = NULL;
+
+    free( seq );
+    seq = NULL;
 }
