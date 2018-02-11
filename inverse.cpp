@@ -5,6 +5,7 @@
 /*  Assignment 01 Skeleton :    inverse.cpp                              */
 /* --------------------------------------------------------------------- */
 
+#define _USE_MATH_DEFINES
 #include "utils.h"
 #include <math.h>
 
@@ -68,9 +69,9 @@ void inverse( int n, char* file_path, char* save_path )
                     {
                         bmp.getColor( gf_x, gf_y, gf_r, gf_g, gf_b );
                     }
-                    r += gf_r * gaunssian_filter[row][column];
-                    g += gf_g * gaunssian_filter[row][column];
-                    b += gf_b * gaunssian_filter[row][column];
+                    r += ( unsigned char )( gf_r * gaunssian_filter[row][column] );
+                    g += ( unsigned char )( gf_g * gaunssian_filter[row][column] );
+                    b += ( unsigned char )( gf_b * gaunssian_filter[row][column] );
                 }
             }
             bmp.setColor( x, y, r, g, b );
