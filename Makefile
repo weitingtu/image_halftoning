@@ -4,7 +4,7 @@ ifeq ($(MODE),rd)
     CFLAGS :=$(filter-out -O2,$(CFLAGS))
     CFLAGS += -g3 -gdwarf-4 -ggdb3 
 endif
-LDFLAGS = -lstdc++
+LDFLAGS = -lstdc++ -lm
 
 all: demo bmp.o dither.o inverse.o
 
