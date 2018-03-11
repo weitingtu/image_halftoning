@@ -92,9 +92,9 @@ void dither( int n, char* file_path, char* save_path )
             unsigned char g = 0;
             unsigned char b = 0;
             bmp.getColor( x, y, r, g, b );
-            r = ( r / ( size + 1 ) ) > screening_matrix[x % n][y % n] ? 255 : 0;
-            g = ( g / ( size + 1 ) ) > screening_matrix[x % n][y % n] ? 255 : 0;
-            b = ( b / ( size + 1 ) ) > screening_matrix[x % n][y % n] ? 255 : 0;
+            r = ( ( double )r / 256 ) > ( double )screening_matrix[x % n][y % n] / ( size + 1 ) ? 255 : 0;
+            g = ( ( double )g / 256 ) > ( double )screening_matrix[x % n][y % n] / ( size + 1 ) ? 255 : 0;
+            b = ( ( double )b / 256 ) > ( double )screening_matrix[x % n][y % n] / ( size + 1 ) ? 255 : 0;
             bmp.setColor( x, y, r, g, b );
         }
     }

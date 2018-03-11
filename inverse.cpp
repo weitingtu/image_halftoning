@@ -30,14 +30,14 @@ void inverse( int n, char* file_path, char* save_path )
     {
         int origin_x = n / 2;
         int origin_y = n / 2;
-        double sigma = n / 4;
+        double sigma = ( double )n / 4;
         double coef  = 1 / ( 2 * sigma * sigma * M_PI );
         for ( int row = 0; row < n; ++row )
         {
             for ( int column = 0; column < n; ++column )
             {
-                double x = abs( column - origin_x );
-                double y = abs( row - origin_y );
+                int x = abs( column - origin_x );
+                int y = abs( row - origin_y );
                 gaunssian_filter[row][column] = coef * exp( -( ( x * x + y * y ) / ( 2 * sigma * sigma ) ) );
             }
         }
@@ -53,9 +53,9 @@ void inverse( int n, char* file_path, char* save_path )
     {
         for ( int x = 0; x < bmp.getWidth(); ++x )
         {
-            unsigned char r = 0;
-            unsigned char g = 0;
-            unsigned char b = 0;
+            double r = 0.0;
+            double g = 0.0;
+            double b = 0.0;
             for ( int row = 0; row < n; ++row )
             {
                 for ( int column = 0; column < n; ++column )
@@ -69,12 +69,15 @@ void inverse( int n, char* file_path, char* save_path )
                     {
                         bmp.getColor( gf_x, gf_y, gf_r, gf_g, gf_b );
                     }
-                    r += ( unsigned char )( gf_r * gaunssian_filter[row][column] );
-                    g += ( unsigned char )( gf_g * gaunssian_filter[row][column] );
-                    b += ( unsigned char )( gf_b * gaunssian_filter[row][column] );
+                    r += ( gf_r * gaunssian_filter[row][column] );
+                    g += ( gf_g * gaunssian_filter[row][column] );
+                    b += ( gf_b * gaunssian_filter[row][column] );
                 }
             }
-            bmp.setColor( x, y, r, g, b );
+            unsigned char cr = ( unsigned char ) r;
+            unsigned char cg = ( unsigned char ) g;
+            unsigned char cb = ( unsigned char ) b;
+            bmp.setColor( x, y, cr, cg, cb );
         }
     }
     bmp.save( save_path );
